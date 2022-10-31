@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: salaries-service
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8081
+  datasource:
+    url: jdbc:mysql://localhost:5432/salaries
+    username: postgres
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update

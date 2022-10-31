@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      default-zone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: loadtimestamps-service
+          uri: lb://loadtimestamps-service
+          predicates:
+            - Path=/loadtimestamps/**
+        - id: salaries-service
+          uri: lb://salaries-service
+          predicates:
+            - Path=/salaries/**
+        - id: uploadextrahours-service
+          uri: lb://uploadextrahours-service
+          predicates:
+            - Path=/uploadextrahours/**
+        - id: uploadjustification-service
+          uri: lb://uploadjustification-service
+          predicates:
+            - Path=/uploadjustification/**
