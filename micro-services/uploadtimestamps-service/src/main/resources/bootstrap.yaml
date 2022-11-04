@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: uploadtimestamps-service
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8081
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: password
+    url: jdbc:postgresql://localhost:5432/loadtimestamps
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true

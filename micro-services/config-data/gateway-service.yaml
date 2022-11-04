@@ -17,10 +17,10 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: loadtimestamps-service
-          uri: lb://loadtimestamps-service
+        - id: uploadtimestamps-service
+          uri: lb://uploadtimestamps-service
           predicates:
-            - Path=/loadtimestamps/**
+            - Path=/uploadtimestamps/**
         - id: salaries-service
           uri: lb://salaries-service
           predicates:
