@@ -23,6 +23,11 @@ public class TimestampEntity {
 
     @Getter
     @Setter
+    @Column(name = "id_staff")
+    private Long idStaff;
+
+    @Getter
+    @Setter
     @Column(name = "time")
     private Time time;
 

@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import tingeso.uploadtimestamps.entities.TimestampEntity;
+import tingeso.uploadtimestamps.models.StaffModel;
 import tingeso.uploadtimestamps.repositories.TimestampRepository;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.sql.Time;
@@ -13,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class UploadTimestampsService {
@@ -20,8 +23,21 @@ public class UploadTimestampsService {
     @Autowired
     TimestampRepository timestampRepository;
 
+    @Autowired
+    RestTemplate restTemplate;
+
     SimpleDateFormat simpleDateFormatForDate = new SimpleDateFormat("yyyy/MM/dd");
     SimpleDateFormat simpleDateFormatForTime = new SimpleDateFormat("hh:mm");
+
+    @Generated
+    private StaffModel getStaffByRut(String rut){
+        List<StaffModel> finded = restTemplate.getForObject("http://salaries-service/salaries/staff-byrut/" + rut, List.class);
+        if(finded == null){
+            return null;
+        }
+        return finded.get(0);
+    }
+
     @Generated
     private Date parseDate(String str){
 
@@ -49,6 +65,7 @@ public class UploadTimestampsService {
 
     private int saveNewTimeStamp(String rut, String date, String time) {
         TimestampEntity timestampEntityToBeUpload = new TimestampEntity();
+        timestampEntityToBeUpload.setIdStaff(getStaffByRut(rareSubstring(rut)).getIdStaff());
 
         Date parsedDate = parseDate(date);
         if(parsedDate == null){
@@ -101,13 +118,13 @@ public class UploadTimestampsService {
     public int uploadTimeStamps(String allData){
         ArrayList<String> dataSplitted = splitData(allData);
         for(int i = 0; i < dataSplitted.size(); i = 3 + i) {
-            try{
-                if(saveNewTimeStamp(dataSplitted.get(i+2),dataSplitted.get(i),dataSplitted.get(i+1)) == -1){
-                    return i+1;
-                }
-            }catch (Exception e){
-                return 1;
-            }
+           try{
+               if(saveNewTimeStamp(dataSplitted.get(i+2),dataSplitted.get(i),dataSplitted.get(i+1)) == -1){
+                   return i+1;
+               }
+           }catch (Exception e){
+               return 1;
+           }
         }
         return 0;
     }
