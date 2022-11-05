@@ -18,10 +18,9 @@ import tingeso.salaries.models.TimestampModel;
 
 @Service
 public class RequestService {
-    @Autowired
-    RestTemplate restTemplate;
 
     public List<TimestampModel> timestampsGetByIdStaffAndDate(Long IdStaff, Date date){
+        RestTemplate restTemplate = new RestTemplate();
         String resourceUrl = "http://uploadtimestamps-service/timestamps/"+IdStaff;
         HttpHeaders headers = new HttpHeaders();
 
@@ -41,6 +40,7 @@ public class RequestService {
     }
 
     public List<ExtraHoursModel> extraHoursfindAllByIdStaffAndMonthAndYear(Long idStaff, int month, int year){
+        RestTemplate restTemplate = new RestTemplate();
         String query = "http://uploadextrahours-service/extrahours/"+idStaff+"/"+month+"/"+year;
         List<ExtraHoursModel> extraHours = restTemplate.getForObject(query, List.class);
         return extraHours;

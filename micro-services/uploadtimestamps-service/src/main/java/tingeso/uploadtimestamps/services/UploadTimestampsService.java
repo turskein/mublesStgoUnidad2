@@ -31,8 +31,10 @@ public class UploadTimestampsService {
         RestTemplate restTemplate = new RestTemplate();
         List<StaffModel> finded = restTemplate.getForObject("http://salaries-service/staff/byrut/" + rut, List.class);
         if(finded == null){
+            System.out.println("\n==============\nNo se esta encontrando el trabajador\n==============\n");
             return null;
         }
+        System.out.println("\n==============\nWTF\n==============\n");
         return finded.get(0);
     }
 
@@ -115,12 +117,15 @@ public class UploadTimestampsService {
 
     public int uploadTimeStamps(String allData){
         ArrayList<String> dataSplitted = splitData(allData);
+        System.out.println("Realiza bien el split :D");
         for(int i = 0; i < dataSplitted.size(); i = 3 + i) {
            try{
                if(saveNewTimeStamp(dataSplitted.get(i+2),dataSplitted.get(i),dataSplitted.get(i+1)) == -1){
                    return i+1;
                }
            }catch (Exception e){
+               System.out.println("\nHrmn, hace el tremendo catch y lo printeaaa\n");
+               System.out.println(e);
                return 1;
            }
         }

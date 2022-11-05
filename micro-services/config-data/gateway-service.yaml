@@ -30,13 +30,23 @@ spring:
           uri: lb://salaries-service
           predicates:
             - Path=/salaries/**
+        - id: salaries-service
+          uri: lb://salaries-service
+          predicates:
             - Path=/staff/**
         - id: uploadextrahours-service
           uri: lb://uploadextrahours-service
           predicates:
             - Path=/uploadextrahours/**
+        - id: uploadextrahours-service
+          uri: lb://uploadextrahours-service
+          predicates:
             - Path=/extrahours/**
 
+        - id: uploadjustification-service
+          uri: lb://uploadjustification-service
+          predicates:
+            - Path=/uploadjustification/**
         - id: uploadjustification-service
           uri: lb://uploadjustification-service
           predicates:

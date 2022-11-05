@@ -6,7 +6,8 @@ spring:
       enabled: true
       uri: http://localhost:8081
   datasource:
-    url: jdbc:mysql://localhost:5432/salaries
+    url: jdbc:postgresql://localhost:5432/salaries
+    driver-class-name: org.postgresql.Driver
     username: postgres
     password: password
   jpa:
