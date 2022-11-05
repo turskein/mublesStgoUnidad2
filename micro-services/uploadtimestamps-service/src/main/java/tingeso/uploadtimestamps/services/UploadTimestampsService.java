@@ -29,7 +29,7 @@ public class UploadTimestampsService {
     @Generated
     private StaffModel getStaffByRut(String rut){
         RestTemplate restTemplate = new RestTemplate();
-        List<StaffModel> finded = restTemplate.getForObject("http://salaries-service/salaries/staff-byrut/" + rut, List.class);
+        List<StaffModel> finded = restTemplate.getForObject("http://salaries-service/staff/byrut/" + rut, List.class);
         if(finded == null){
             return null;
         }

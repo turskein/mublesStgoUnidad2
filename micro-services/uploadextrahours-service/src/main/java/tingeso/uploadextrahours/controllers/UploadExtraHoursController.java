@@ -18,7 +18,7 @@ import tingeso.uploadextrahours.services.UploadExtraHoursService;
 
 @Controller
 @RestController
-@RequestMapping("/uploadjustification")
+@RequestMapping("/uploadextrahours")
 @Generated
 public class UploadExtraHoursController {
     @Autowired

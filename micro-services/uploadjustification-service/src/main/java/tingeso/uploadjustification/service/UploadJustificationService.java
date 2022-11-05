@@ -23,7 +23,7 @@ public class UploadJustificationService {
     @Generated
     private Long getIdByRut(String rut){
         try {
-            List<StaffModel> finded = restTemplate.getForObject("http://salaries-service/salaries/staff-byrut/" + rut, List.class);
+            List<StaffModel> finded = restTemplate.getForObject("http://salaries-service/staff/byrut/" + rut, List.class);
             if(finded == null){
                 return null;
             }
