@@ -20,18 +20,13 @@ spring:
         - id: uploadtimestamps-service
           uri: lb://uploadtimestamps-service
           predicates:
-            - Path=/uploadtimestamps/**
-        - id: uploadtimestamps-service
-          uri: lb://uploadtimestamps-service
-          predicates:
-              Path=/timestamps/**
+              Path=/timestamps/**,/uploadtimestamps/**
 
         - id: salaries-service
           uri: lb://salaries-service
           predicates:
             - Path=/salaries/**
             - Path=/staff/**
-
         - id: uploadextrahours-service
           uri: lb://uploadextrahours-service
           predicates:
