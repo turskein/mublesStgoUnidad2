@@ -3,11 +3,11 @@ package tingeso.uploadtimestamps.services;
 import lombok.Generated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import tingeso.uploadtimestamps.entities.TimestampEntity;
 import tingeso.uploadtimestamps.models.StaffModel;
 import tingeso.uploadtimestamps.repositories.TimestampRepository;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.sql.Time;
@@ -23,14 +23,12 @@ public class UploadTimestampsService {
     @Autowired
     TimestampRepository timestampRepository;
 
-    @Autowired
-    RestTemplate restTemplate;
-
     SimpleDateFormat simpleDateFormatForDate = new SimpleDateFormat("yyyy/MM/dd");
     SimpleDateFormat simpleDateFormatForTime = new SimpleDateFormat("hh:mm");
 
     @Generated
     private StaffModel getStaffByRut(String rut){
+        RestTemplate restTemplate = new RestTemplate();
         List<StaffModel> finded = restTemplate.getForObject("http://salaries-service/salaries/staff-byrut/" + rut, List.class);
         if(finded == null){
             return null;

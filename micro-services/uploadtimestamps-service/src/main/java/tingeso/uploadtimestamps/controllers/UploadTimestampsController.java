@@ -6,12 +6,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
-import tingeso.uploadtimestamps.entities.TimestampEntity;
 import tingeso.uploadtimestamps.services.TimestampsService;
 import tingeso.uploadtimestamps.services.UploadTimestampsService;
 
@@ -26,17 +25,15 @@ public class UploadTimestampsController {
     @Autowired
     TimestampsService timestampsService;
 
+    /*
+     * If was correctly executed return is 0, antoher number otherwise
+     */
     @PostMapping("/upload-timestamps")
-    public ModelAndView uploadTimestamps(@RequestParam("file") MultipartFile file){
+    public ResponseEntity<Integer> uploadTimestamps(@RequestParam("file") MultipartFile file){
         int response = uploadTimestampsService.uploadTimestamps(file);
-        if(response == 0){
-            return new ModelAndView("redirect:/");
+        if(response != 0){
+            return ResponseEntity.noContent().build();
         }
-        return new ModelAndView("redirect:/upload-data");
-    }
-
-    @GetMapping("/timestamps/{id}")
-    public List<TimestampEntity> findByIdStaffAndDate(@PathVariable("id") Long idStaff,@RequestBody Date date){
-        return timestampsService.findByIdStaffAndDate(idStaff, date);
+        return ResponseEntity.ok(response);
     }
 }
