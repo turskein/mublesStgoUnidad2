@@ -22,7 +22,7 @@ public class TimestampsController {
     TimestampsService timestampsService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<TimestampEntity>> findByIdStaffAndDate(@PathVariable("id") Long idStaff,@RequestBody Date date){
+    public ResponseEntity<List<TimestampEntity>> findByIdStaffAndDate(@PathVariable("id") Long idStaff,@RequestParam Date date){
         List<TimestampEntity> response = timestampsService.findByIdStaffAndDate(idStaff, date);
         return ResponseEntity.ok(response);
     }
