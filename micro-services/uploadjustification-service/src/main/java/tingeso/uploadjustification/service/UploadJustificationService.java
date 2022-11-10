@@ -7,9 +7,12 @@ import lombok.Generated;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
 import java.util.List;
+
+import javax.ws.rs.core.Response;
 
 @Service
 public class UploadJustificationService {
@@ -21,16 +24,14 @@ public class UploadJustificationService {
     RestTemplate restTemplate;
 
     @Generated
-    private Long getIdByRut(String rut){
-        try {
-            List<StaffModel> finded = restTemplate.getForObject("http://salaries-service/staff/byrut/" + rut, List.class);
-            if(finded == null){
-                return null;
-            }
-            return finded.get(0).getIdStaff();
-        }catch (Exception e){
-            return Integer.toUnsignedLong(0);
+    public Long getIdByRut(String rut){
+        ResponseEntity<StaffModel> response = restTemplate.getForEntity("http://salaries-service/staff/byrut?rut=" + rut, StaffModel.class);
+        if(response.getBody() == null){
+            System.out.println("Status code, esto sucede porque el body es null, es decir, no encuentra el staff: "+response.getStatusCode());
+            return null;
         }
+        StaffModel staff = response.getBody();
+        return staff.getIdStaff();
     }
 
     @Generated

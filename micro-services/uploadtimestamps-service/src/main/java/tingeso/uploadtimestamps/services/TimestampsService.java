@@ -1,5 +1,7 @@
 package tingeso.uploadtimestamps.services;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -15,8 +17,16 @@ public class TimestampsService {
     @Autowired
     TimestampRepository timestampRepository;
 
-    public List<TimestampEntity> findByIdStaffAndDate(Long idStaff, Date date){
-        return timestampRepository.findByIdStaffAndDate(idStaff, date);
+    SimpleDateFormat simpleDateFormatForDate = new SimpleDateFormat("yyyy/MM/dd");
+
+    public List<TimestampEntity> findByIdStaffAndDate(Long idStaff, int year, int month, int day){
+        try{
+            return timestampRepository.findByIdStaffAndDate(idStaff, simpleDateFormatForDate.parse(year+"/"+month+"/"+day));
+        }catch(ParseException e){
+            System.out.println(e);
+            return null;
+        }
+        
     }
 
 }

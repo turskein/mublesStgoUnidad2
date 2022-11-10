@@ -1,7 +1,13 @@
 package tingeso.uploadtimestamps.services;
 
 import lombok.Generated;
+import org.springframework.http.HttpEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,8 +20,11 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import javax.ws.rs.core.Response;
 
 @Service
 public class UploadTimestampsService {
@@ -23,21 +32,21 @@ public class UploadTimestampsService {
     @Autowired
     TimestampRepository timestampRepository;
 
+    @Autowired
+    RestTemplate restTemplate;
+
     SimpleDateFormat simpleDateFormatForDate = new SimpleDateFormat("yyyy/MM/dd");
     SimpleDateFormat simpleDateFormatForTime = new SimpleDateFormat("hh:mm");
 
     @Generated
-    private StaffModel getStaffByRut(String rut){
-        RestTemplate restTemplate = new RestTemplate();
-        List<StaffModel> finded = restTemplate.getForObject("http://salaries-service/staff/byrut/" + rut, List.class);
-        if(finded == null){
-            System.out.println("\n==============\nNo se esta encontrando el trabajador\n==============\n");
+    public StaffModel getStaffByRut(String rut){
+        ResponseEntity<StaffModel> response = restTemplate.getForEntity("http://salaries-service/staff/byrut?rut=" + rut, StaffModel.class);
+        if(response.getBody() == null){
+            System.out.println("Status code, esto sucede porque el body es null, es decir, no encuentra el staff: "+response.getStatusCode());
             return null;
         }
-        System.out.println("\n==============\nWTF\n==============\n");
-        return finded.get(0);
+        return response.getBody();
     }
-
     @Generated
     private Date parseDate(String str){
 
@@ -60,7 +69,7 @@ public class UploadTimestampsService {
     }
 
     private String rareSubstring(String str){
-        return str.substring(0,str.length()-1);
+        return str.substring(0,str.length()-2);
     }
 
     private int saveNewTimeStamp(String rut, String date, String time) {
@@ -117,7 +126,6 @@ public class UploadTimestampsService {
 
     public int uploadTimeStamps(String allData){
         ArrayList<String> dataSplitted = splitData(allData);
-        System.out.println("Realiza bien el split :D");
         for(int i = 0; i < dataSplitted.size(); i = 3 + i) {
            try{
                if(saveNewTimeStamp(dataSplitted.get(i+2),dataSplitted.get(i),dataSplitted.get(i+1)) == -1){

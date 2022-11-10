@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import tingeso.uploadtimestamps.models.StaffModel;
 import tingeso.uploadtimestamps.services.TimestampsService;
 import tingeso.uploadtimestamps.services.UploadTimestampsService;
 
@@ -35,5 +36,14 @@ public class UploadTimestampsController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/consulta")
+    public ResponseEntity<StaffModel> lala(@RequestParam("rut") String jajaxdddd){
+        StaffModel lalala = uploadTimestampsService.getStaffByRut(jajaxdddd);
+        if(lalala == null){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(lalala);
     }
 }

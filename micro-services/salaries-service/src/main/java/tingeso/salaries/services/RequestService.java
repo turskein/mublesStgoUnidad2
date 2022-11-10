@@ -1,5 +1,7 @@
 package tingeso.salaries.services;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -18,31 +20,35 @@ import tingeso.salaries.models.TimestampModel;
 
 @Service
 public class RequestService {
+    @Autowired
+    RestTemplate restTemplate;
 
     public List<TimestampModel> timestampsGetByIdStaffAndDate(Long IdStaff, Date date){
-        RestTemplate restTemplate = new RestTemplate();
-        String resourceUrl = "http://uploadtimestamps-service/timestamps/"+IdStaff;
-        HttpHeaders headers = new HttpHeaders();
-
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        headers.set("date",date.toString());
-
-        HttpEntity request = new HttpEntity(headers);
-
-        ResponseEntity<List> response = restTemplate.exchange(
-            resourceUrl,
-            HttpMethod.GET,
-            request,
-            List.class);
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int year = localDate.getYear();
+        int month = localDate.getMonthValue();
+        int day = localDate.getDayOfMonth();
+        System.out.println(year);
+        System.out.println(month);
+        System.out.println(day);
+        String resourceUrl = "http://uploadtimestamps-service/timestamps/"+IdStaff+"?year="+year+"&month="+month+"&day="+day;
+        System.out.println(resourceUrl);
+        ResponseEntity<List> response = restTemplate.getForEntity(resourceUrl,List.class);
+        if(response == null){
+            System.out.println("wea mala");
+            return null;
+        }
         return response.getBody();
     }
 
     public List<ExtraHoursModel> extraHoursfindAllByIdStaffAndMonthAndYear(Long idStaff, int month, int year){
         RestTemplate restTemplate = new RestTemplate();
         String query = "http://uploadextrahours-service/extrahours/"+idStaff+"/"+month+"/"+year;
-        List<ExtraHoursModel> extraHours = restTemplate.getForObject(query, List.class);
+        ResponseEntity<List> response = restTemplate.getForEntity(query, List.class);
+        if(response == null){
+            return null;
+        }
+        List<ExtraHoursModel> extraHours = response.getBody();
         return extraHours;
     }
 }
