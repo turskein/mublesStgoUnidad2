@@ -2,18 +2,18 @@ package tingeso.salaries.services;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.bouncycastle.asn1.x509.Time;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import tingeso.salaries.models.ExtraHoursModel;
 import tingeso.salaries.models.TimestampModel;
@@ -28,27 +28,30 @@ public class RequestService {
         int year = localDate.getYear();
         int month = localDate.getMonthValue();
         int day = localDate.getDayOfMonth();
-        System.out.println(year);
-        System.out.println(month);
-        System.out.println(day);
         String resourceUrl = "http://uploadtimestamps-service/timestamps/"+IdStaff+"?year="+year+"&month="+month+"&day="+day;
-        System.out.println(resourceUrl);
-        ResponseEntity<List> response = restTemplate.getForEntity(resourceUrl,List.class);
+        ResponseEntity<Object[]> response = restTemplate.getForEntity(resourceUrl,Object[].class);
         if(response == null){
-            System.out.println("wea mala");
             return null;
         }
-        return response.getBody();
+        Object[] records = response.getBody();
+
+        ObjectMapper mapper = new ObjectMapper(); // Mapper desde object a modelo Empleado
+        return Arrays.stream(records)
+                .map(employee -> mapper.convertValue(employee, TimestampModel.class))
+                .collect(Collectors.toList());
     }
 
     public List<ExtraHoursModel> extraHoursfindAllByIdStaffAndMonthAndYear(Long idStaff, int month, int year){
-        RestTemplate restTemplate = new RestTemplate();
         String query = "http://uploadextrahours-service/extrahours/"+idStaff+"/"+month+"/"+year;
-        ResponseEntity<List> response = restTemplate.getForEntity(query, List.class);
+        ResponseEntity<Object[]> response = restTemplate.getForEntity(query, Object[].class);
         if(response == null){
             return null;
         }
-        List<ExtraHoursModel> extraHours = response.getBody();
-        return extraHours;
+        Object[] records = response.getBody();
+
+        ObjectMapper mapper = new ObjectMapper(); // Mapper desde object a modelo Empleado
+        return Arrays.stream(records)
+                .map(employee -> mapper.convertValue(employee, ExtraHoursModel.class))
+                .collect(Collectors.toList());
     }
 }

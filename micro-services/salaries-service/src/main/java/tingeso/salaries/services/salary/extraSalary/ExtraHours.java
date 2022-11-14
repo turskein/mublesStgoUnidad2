@@ -88,6 +88,9 @@ public class ExtraHours {
 
         int validatedAmountExtraHour = 0;
         List<ExtraHoursModel> everyExtraHour = getExtraHoursByStaffAndDate(worker, month, year);
+        if(everyExtraHour == null){
+            return 0;
+        }
         for(int i = 0; i < everyExtraHour.size(); i ++){
             validatedAmountExtraHour = validatedAmountExtraHour + validateExtraHours(worker,everyExtraHour.get(i));
         }

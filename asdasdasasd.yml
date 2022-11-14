@@ -1,0 +1,46 @@
+version: "3.8"
+services:
+  config-service:
+    container_name: config-service
+    build: ./micro-services/config-service
+  eureka-service:
+    container_name: eureka-service
+    build: ./micro-services/eureka-service
+    depends_on:
+      - config-service
+    ports:
+      - 8761:8761
+  uploadtimestamps-service:
+    container_name: uploadtimestamps-service
+    build: ./micro-services/uploadtimestamps-service
+    depends_on:
+      - config-service
+      - eureka-service
+  uploadjustification-service:
+    container_name: uploadjustification-service
+    build: ./micro-services/uploadjustification-service
+    depends_on:
+      - config-service
+      - eureka-service
+  uploadextrahours-service:
+    container_name: uploadextrahours-service
+    build: ./micro-services/uploadextrahours-service
+    depends_on:
+      - config-service
+      - eureka-service
+  salaries-service:
+    container_name: salaries-service
+    build: ./micro-services/salaries-service
+    depends_on:
+      - config-service
+      - eureka-service
+  gateway-service:
+    container_name: salaries-service
+    build: ./micro-services/salaries-service
+    depends_on:
+      - config-service
+      - eureka-service
+      - salaries-service
+      - uploadextrahours-service
+      - uploadjustification-service
+      - uploadtimestamps-service
