@@ -1,8 +1,14 @@
 spring:
   application:
     name: salaries-service
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/mydb
+    username: postgres
+    password: password
+    driverClassName: org.postgresql.Driver
 server:
-  port: 67770
+  port: 8181
   forward-headers-strategy: framework
 eureka:
   client:

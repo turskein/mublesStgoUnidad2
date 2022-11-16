@@ -12,7 +12,6 @@ class IndexComponent extends Component {
     render() {
         return (
             <div>
-                <h1>lala</h1>
             </div>
         )
     }

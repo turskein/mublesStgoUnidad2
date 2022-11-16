@@ -2,16 +2,36 @@ version: "3.8"
 services:
   eureka-service:
     container_name: eureka-service
-    image: eureka-image
+    image: alexpachecolaos/eureka-image:latest
     ports:
       - "8761:8761"
+  gateway-service:
+    container_name: gateway-service
+    image: alexpachecolaos/gateway-image:latest
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka-service
+      - uploadtimestamps-service
+      - uploadextrahours-service
+      - uploadjustification-service
+      - salaries-service
+    links:
+      - eureka-service
   salaries-service:
     container_name: salaries-service
-    image: salaries-image
+    image: alexpachecolaos/salaries-image:latest
     ports:
       - "31231:8181"
     environment:
         - eureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://salariesdatabase:5432/salariesdb
+        - SPRING_DATASOURCE_USERNAME=postgres
+        - SPRING_DATASOURCE_PASSWORD=password
+        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+        - SERVER_PORT=8181
     deploy:
         restart_policy:
           condition: on-failure
@@ -19,6 +39,105 @@ services:
       - eureka-service
     links:
       - eureka-service
-      
-  
-      
+      - db-salaries
+  uploadtimestamps-service:
+    container_name: uploadtimestamps-service
+    image: alexpachecolaos/uploadtimestamps-image:latest
+    ports:
+      - "31232:8282"
+    environment:
+        - eureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://timestampsdatabase:5432/timestampsdb
+        - SPRING_DATASOURCE_USERNAME=postgres
+        - SPRING_DATASOURCE_PASSWORD=password
+        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+        - SERVER_PORT=8282
+    deploy:
+        restart_policy:
+          condition: on-failure
+    depends_on:
+      - eureka-service
+    links:
+      - eureka-service
+      - db-timestamps
+  uploadextrahours-service:
+    container_name: uploadextrahours-service
+    image: alexpachecolaos/uploadextrahours-image:latest
+    ports:
+      - "31233:8383"
+    environment:
+        - eureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://extrahoursdatabase:5432/extrahoursdb
+        - SPRING_DATASOURCE_USERNAME=postgres
+        - SPRING_DATASOURCE_PASSWORD=password
+        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+        - SERVER_PORT=8383
+    deploy:
+        restart_policy:
+          condition: on-failure
+    depends_on:
+      - eureka-service
+    links:
+      - eureka-service
+      - db-extrahours
+  uploadjustification-service:
+    container_name: uploadjustification-service
+    image: alexpachecolaos/uploadjustification-image:latest
+    ports:
+      - "31234:8484"
+    environment:
+        - eureka.client.serviceUrl.defaultZone=http://eureka-service:8761/eureka/
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://justificationdatabase:5432/justificationdb
+        - SPRING_DATASOURCE_USERNAME=postgres
+        - SPRING_DATASOURCE_PASSWORD=password
+        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+        - SERVER_PORT=8484
+    deploy:
+        restart_policy:
+          condition: on-failure
+    depends_on:
+      - eureka-service
+    links:
+      - eureka-service
+      - db-justification
+  db-justification:
+    image: 'postgres:latest'
+    container_name: justificationdatabase
+    environment:
+      - POSTGRES_DB=justificationdb
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+    volumes:
+      - /var/lib/postgresql/data
+      - ./pgsql/justification.sql:/docker-entrypoint-initdb.d/justification.sql
+  db-salaries:
+    image: 'postgres:latest'
+    container_name: salariesdatabase
+    environment:
+      - POSTGRES_DB=salariesdb
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+    volumes:
+      - /var/lib/postgresql/data
+      - ./pgsql/salaries.sql:/docker-entrypoint-initdb.d/salaries.sql
+  db-extrahours:
+    image: 'postgres:latest'
+    container_name: extrahoursdatabase
+    environment:
+      - POSTGRES_DB=extrahoursdb
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+    volumes:
+      - /var/lib/postgresql/data
+      - ./pgsql/extrahours.sql:/docker-entrypoint-initdb.d/extrahours.sql
+  db-timestamps:
+    image: 'postgres:latest'
+    container_name: timestampsdatabase
+    environment:
+      - POSTGRES_DB=timestampsdb
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+    volumes:
+      - /var/lib/postgresql/data
+      - ./pgsql/extrahours.sql:/docker-entrypoint-initdb.d/extrahours.sql
+

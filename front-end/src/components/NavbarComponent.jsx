@@ -11,28 +11,25 @@ class NavbarComponent extends Component {
 
     render() {
         return (
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+            <nav className="ps-4 navbar navbar-expand-lg navbar-dark bg-dark mb-3">
                 <div className="container-fluid">
-                    <a className="navbar-brand" href="/">MUeblesStgo:D</a>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <a className="navbar-brand" href="/index">Tingeso 2022 :D</a>
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav">
+                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <a className="nav-link active" aria-current="page" href="/uploadtimestamps">Cargar marcas de tiempo</a>
+                                <a className="nav-link" href="/uploadtimestamps">Cargar Marcaciones</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/">Cargar justificaciones</a>
+                                <a className="nav-link" href="/upload-justifive">Cargar Justificativos</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/">Cargar horas extras</a>
+                                <a className="nav-link" href="/salary/sheet-salary">Plantilla de sueldos</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/">Ver Salarios</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/">Ver Reportes</a>
+                                <a className="nav-link" href="/salary/reports">Reportes de sueldos</a>
                             </li>
                         </ul>
                     </div>
