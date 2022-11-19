@@ -1,0 +1,26 @@
+.my-button{
+    border: 0px;
+    padding: 0px;
+    margin-bottom: 0.5rem;
+    border-radius: 20px;
+    background-color: white;
+    width: 50rem;
+}
+
+.alert-mine{
+    display: inline-block;
+    padding: 0.5rem;
+    text-align: left;
+    margin-left: 0px;
+    width: 40rem;
+    float: left;
+}
+
+.closeButton{
+    background-color: rgb(134, 207, 134);
+    display: inline-block;
+    float: right;
+    padding: 0.8rem;
+    margin: 0px;
+    height: 1rem;
+}

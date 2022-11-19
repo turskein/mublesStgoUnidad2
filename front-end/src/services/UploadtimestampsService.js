@@ -7,9 +7,8 @@ class UploadtimestampsService {
     postTimestamps(file){
         const formData = new FormData();
         formData.append("file",file);
-        axios.post(TIMESTAMPSURL, formData)
-        .then(response => {return response;})
-        .catch(error => {return error;});
+        return axios.post(TIMESTAMPSURL, formData)
+
     }
 }
 

@@ -21,7 +21,7 @@ public class UploadJustificationController {
     @Autowired
     UploadJustificationService uploadJustificationService;
 
-    @PostMapping()
+    @PostMapping("/upload-justification")
     public ResponseEntity<Integer> uploadJustifyBackwardness(@RequestParam(value="rut") String rut,
                                          @RequestParam(value="date") Date date
                                          ){
