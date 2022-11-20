@@ -5,12 +5,7 @@ const URL = "http://localhost:8080/uploadextrahours";
 class UploadExtraHoursService {
     
     postExtraHoours(rutInput,dateInput,amountInput){
-        return axios.post(URL,{params: {
-            "rut":  rutInput,
-            "date": dateInput,
-            "amount": amountInput
-        }
-    });
+        return axios.post(URL+"?rut="+rutInput+"&date="+dateInput+"&amount="+amountInput);
 
     }
 }

@@ -20,6 +20,7 @@ import tingeso.salaries.models.TimestampModel;
 import tingeso.salaries.services.RequestService;
 import tingeso.salaries.services.StaffService;
 
+@Controller
 @RestController
 @RequestMapping("/staff")
 @Generated

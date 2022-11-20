@@ -1,0 +1,1 @@
+cd ../front-end && docker build . -t alexpachecolaos/frontend-image && docker push alexpachecolaos/frontend-image

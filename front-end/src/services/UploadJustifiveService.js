@@ -4,12 +4,8 @@ const URL = "http://localhost:8080/uploadjustification/upload-justification";
 
 class UploadJustifiveService {
 
-    postJustification(rutInput, dateInput) {
-        return axios.post(URL, {
-            rut: dateInput,
-            date: dateInput
-        }
-        );
+    postJustification(rut, date) {
+        return axios.post(URL+"?rut="+rut+"&date="+date);
 
     }
 }
