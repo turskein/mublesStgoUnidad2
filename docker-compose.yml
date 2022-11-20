@@ -37,9 +37,9 @@ services:
           condition: on-failure
     depends_on:
       - eureka-service
+      - db-salaries
     links:
       - eureka-service
-      - db-salaries
   uploadtimestamps-service:
     container_name: uploadtimestamps-service
     image: alexpachecolaos/uploadtimestamps-image:latest
@@ -140,4 +140,10 @@ services:
     volumes:
       - /var/lib/postgresql/data
       - ./pgsql/extrahours.sql:/docker-entrypoint-initdb.d/extrahours.sql
-
+  front-end:
+    image: alexpachecolaos/frontend-image:latest
+    container_name: front-end
+    depends_on:
+      - gateway-service
+    ports:
+      - "3000:3000"
