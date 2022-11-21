@@ -26,7 +26,6 @@ public class SalariesController {
     GetSalaryForEveryStaff getSalaryForEveryStaff;
 
     @GetMapping("/reports")
-    @RolesAllowed("recursoshumanos") 
     public ResponseEntity<List<SalaryModel>> viewReportSalaries(@RequestParam int month, @RequestParam int year) {
         List<SalaryModel> everySalary = getSalaryForEveryStaff.getSalaryForEveryStaff(month, year);
         return ResponseEntity.ok(everySalary);

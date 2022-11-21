@@ -22,6 +22,9 @@ keycloak:
   resource: muebles-stgo
   public-client: true
   bearer-only: true
+  securityConstraints[0]:
+    authRoles[0]: admin
+    authRoles[1]: user
 manage:
     endpoints:
         web:

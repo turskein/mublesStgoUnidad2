@@ -28,7 +28,7 @@ class NavbarComponent extends Component {
         logOut.hidden = true;
 
         const keycloak = new Keycloak({
-            url: 'http://localhost:8082/',
+            url: 'http://host.docker.internal:8082/',
             realm: 'spring-boot',
             clientId: 'muebles-stgo'
         });
