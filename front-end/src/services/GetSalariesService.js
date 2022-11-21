@@ -1,11 +1,18 @@
 import axios from 'axios';
+import GeneralRoute from './GeneralRoute';
 
-const URL = "http://localhost:8080/salaries/reports";
+const URL = GeneralRoute.get() + "/salaries/reports";
 
 class GetSalariesService {
-    
-    getSalaries(month,anio){
-        return axios.get(URL+"?month="+month+"&year="+anio)
+
+    getSalaries(month, anio) {
+        var token = localStorage.getItem('token');
+        const headers = {
+            header: {
+                Authorization: `Bearer ${token}`,
+            }
+        }
+        return axios.get(URL + "?month=" + month + "&year=" + anio,headers)
     }
 }
 

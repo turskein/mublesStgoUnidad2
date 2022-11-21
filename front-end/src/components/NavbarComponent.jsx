@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Keycloak from 'keycloak-js';
 
 class NavbarComponent extends Component {
     constructor(props) {
@@ -7,6 +8,55 @@ class NavbarComponent extends Component {
         this.state = {
 
         }
+
+        this.handleSignInClick = this.handleSignInClick.bind(this);
+        this.handleLogOutInClick = this.handleLogOutInClick.bind(this);
+    }
+    handleLogOutInClick(){
+        this.state.keycloak.logout();
+        
+    }
+
+    handleSignInClick(){
+        this.state.keycloak.login();
+    }
+
+    componentDidMount(){
+        var logIn = document.getElementById('log-in');
+        var logOut = document.getElementById('log-out');
+        logIn.hidden = false;
+        logOut.hidden = true;
+
+        const keycloak = new Keycloak({
+            url: 'http://localhost:8082/',
+            realm: 'spring-boot',
+            clientId: 'muebles-stgo'
+        });
+
+        keycloak.init({
+            onLoad: 'check-sso'
+        }).then(authenticated => {
+            if(authenticated){
+                keycloak.loadUserInfo().then((userInfo) => {
+                    this.setState({
+                        name: userInfo.name,
+                        email: userInfo.email,
+                        id: userInfo.sub,
+                        roles: keycloak.tokenParsed.realm_access.roles,
+                    });
+                    localStorage.setItem('token', keycloak.token);
+                    console.log(keycloak.idToken);
+                });
+                logIn.hidden = true;
+                logOut.hidden = false;
+            }
+            this.setState({
+                authenticated: authenticated
+            });
+        })
+        this.setState({
+            keycloak: keycloak
+        });
     }
 
     render() {
@@ -31,9 +81,15 @@ class NavbarComponent extends Component {
                             <li className="nav-item">
                                 <a className="nav-link" href="/salary/reports">Reportes de sueldos</a>
                             </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/salary/reports">Reportes de sueldos</a>
+                            </li>
                         </ul>
                     </div>
+                    <button type="button" className="btn btn-secondary" id="log-in" onClick={this.handleSignInClick}>Log In</button>
+                    <button type="button" className="btn btn-secondary" id="log-out" onClick={this.handleLogOutInClick}>Log Out</button>
                 </div>
+                
             </nav>
         )
     }

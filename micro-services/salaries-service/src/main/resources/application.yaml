@@ -16,3 +16,14 @@ eureka:
     register-with-eureka: true
     serviceUrl:
       defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
+keycloak:
+  realm: spring-boot
+  auth-server-url: http://host.docker.internal:8082/
+  resource: muebles-stgo
+  public-client: true
+  bearer-only: true
+manage:
+    endpoints:
+        web:
+        exposure:
+            include: "*"

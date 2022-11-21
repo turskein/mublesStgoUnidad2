@@ -2,7 +2,7 @@ package tingeso.salaries.controllers;
 
 import java.util.List;
 
-import javax.ws.rs.core.Response;
+import javax.annotation.security.RolesAllowed;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +26,7 @@ public class SalariesController {
     GetSalaryForEveryStaff getSalaryForEveryStaff;
 
     @GetMapping("/reports")
+    @RolesAllowed("recursoshumanos") 
     public ResponseEntity<List<SalaryModel>> viewReportSalaries(@RequestParam int month, @RequestParam int year) {
         List<SalaryModel> everySalary = getSalaryForEveryStaff.getSalaryForEveryStaff(month, year);
         return ResponseEntity.ok(everySalary);

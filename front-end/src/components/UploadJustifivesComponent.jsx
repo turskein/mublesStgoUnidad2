@@ -63,7 +63,6 @@ class UploadJustifivesComponent extends Component {
             .then(response => {
                 document.getElementById('alert-success').removeAttribute("hidden");
                 console.log(response);
-
             })
             .catch(e => {
                 console.log(e);

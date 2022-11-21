@@ -1,13 +1,15 @@
 import axios from 'axios';
+import GeneralRoute from './GeneralRoute';
 
-const TIMESTAMPSURL = "http://localhost:8080/uploadtimestamps/upload-timestamps";
+const TIMESTAMPSURL = GeneralRoute.get()+"/uploadtimestamps/upload-timestamps";
 
 class UploadtimestampsService {
     
     postTimestamps(file){
         const formData = new FormData();
         formData.append("file",file);
-        return axios.post(TIMESTAMPSURL, formData)
+        const token = localStorage.getItem("token");
+        return axios.post(TIMESTAMPSURL, formData,{header: {Authorization: `Bearer ${token}`}})
 
     }
 }

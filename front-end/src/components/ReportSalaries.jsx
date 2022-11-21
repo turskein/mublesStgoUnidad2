@@ -34,7 +34,7 @@ class ReportSalaries extends Component {
                 var newSalarios = [];
                 data.forEach(element => {
                     newSalarios.push(
-                        <tr>
+                        <tr key={element.rut}>
                             <td>{element.rut}</td>
                             <td>{element.name}</td>
                             <td>{element.serviceYears}</td>
@@ -67,7 +67,7 @@ class ReportSalaries extends Component {
                     <input type="number" className="form-control" id="input-month" defaultValue={9} />
                     <span className="input-group-text">Año</span>
                     <input type="number" className="form-control" id="input-year" defaultValue={2022} />
-                    <button type="button" class="btn btn-primary" onClick={this.calcularSueldos}>Primary</button>
+                    <button type="button" className="btn btn-primary" onClick={this.calcularSueldos}>Primary</button>
                 </div>
                 <table className="table table-striped">
                     <caption></caption>

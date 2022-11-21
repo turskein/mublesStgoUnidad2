@@ -1,6 +1,6 @@
 import axios from 'axios';
-
-const URL = "http://localhost:8080/uploadjustification/upload-justification";
+import GeneralRoute from './GeneralRoute';
+const URL = GeneralRoute.get()+"/uploadjustification/upload-justification";
 
 class UploadJustifiveService {
 

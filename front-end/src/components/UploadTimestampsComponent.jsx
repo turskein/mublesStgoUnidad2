@@ -8,20 +8,18 @@ class UploadTimestampsComponent extends Component {
 
         this.state = {
             file: null,
-            myStyles,
-            tableBody: null
+            myStyles
         }
         this.inputNewFile = this.inputNewFile.bind(this);
-    }
-    componentDidMount(){
-        this.setState({
-            tableBody: document.getElementById('tableBody')
-        });
+        this.sendData = this.sendData.bind(this);
     }
     inputNewFile() {
+        this.setState({
+            file: document.getElementById('inputFile').files[0]
+        })
         var reader = new FileReader();
         reader.onload = () => {
-            let table = this.state.tableBody;
+            let table = document.getElementById('tableBody');
             table.innerHTML = '';
             let allText = reader.result;
             allText = allText.split("\n");
@@ -48,9 +46,11 @@ class UploadTimestampsComponent extends Component {
     sendData() {
         UploadtimestampsService.postTimestamps(this.state.file)
             .then(() => {
-                this.state.alert.removeAttribute("hidden");
+                document.getElementById('button-alert-success').removeAttribute("hidden",false);
+                console.log("Se ha enviado la data :D");
             })
             .catch(e => {
+                console.log("Error!");
                 console.log(e);
             });
     }
@@ -59,12 +59,12 @@ class UploadTimestampsComponent extends Component {
     render() {
         return (
             <div>
-                <div id="button-alert-success" hidden className="my-button">
-                    <div className="alert alert-success alert-mine" role="alert" id="alert-success">
-                        Las marcas de tiempo se han subido correctamente :D
-                        <button className='closeButton alert alert-success' onClick={this.closeAlertSuccess}>
-                            .
-                        </button>
+                <div className="mt-2 alert alert-success row justify-content-between" hidden role="alert" id="button-alert-success" >
+                    <div className="mt-2 col">
+                        <p>Las marcas de tiempo se subieron correctamente </p>
+                    </div>
+                    <div className="col-1 mt-1">
+                        <button type="button" className="btn btn-success my-0" onClick={this.closeAlertSuccess}>Close</button>
                     </div>
                 </div>
 
